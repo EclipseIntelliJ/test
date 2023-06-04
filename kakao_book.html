@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오 책 검색</title>
+    <style>
+        #result {
+            display: flex;
+        }
+        #result p {
+            margin-right: 30px;
+            background-color: yellow;
+            align-items: center;
+            font-size: 20px;
+            
+        }
+       
+    </style>
+   
+</head>
+
+<body>
+    <h1>BOOK SEARCH</h1>
+    <div id="con">
+        <input type="search" name="book_name" id="book_name">
+        <button id="btn">검색</button>
+        <div id="result">
+            <p id="img"></p>
+            <p id="title"></p>
+            <p id="authors"></p>
+            <p id="price"></p>
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $("#btn").click(function () {
+                $.ajax({ //요청에 대한 정보
+                    method: "GET", //전송 방식
+                    url: "https://dapi.kakao.com/v3/search/book?target=title", //전송 주소
+                    data: { query: $("#book_name").val() }, //보낼 데이터
+                    headers: { Authorization: "KakaoAK 9a6e29e6b8ed5e6f0fbb033bb0dd0e5a" }
+                })
+                    .done(function (msg) { //done 이후 응답을 가지고 처리하는 코드
+                        console.log(msg.documents[0].title);
+                        console.log(msg.documents[0].thumbnail);
+                        $("#img").append("<img src='" + msg.documents[0].thumbnail + "'/>");
+                        $("#title").append(msg.documents[0].title);
+                        $("#authors").append(msg.documents[0].authors);
+                        $("#price").append(msg.documents[0].price);
+                        
+                    });
+            });
+        });
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
